@@ -340,20 +340,28 @@ export default function GraniteHillsScoutApp() {
 
   // Navy: #1e3a5f, Columbia: #9bcbeb
   const Header = () => (
-    <div className="bg-[#1e3a5f] text-white px-4 py-3 flex items-center justify-between safe-top">
-      <div>
-        <h1 className="text-lg font-bold text-[#9bcbeb]">GRANITE HILLS</h1>
-        <p className="text-xs text-slate-300">Pitcher Scout</p>
-      </div>
-      <div className="flex items-center gap-2">
-        {pickMove.type && (
-          <div className={`${pickMoveTypes.find(m => m.name === pickMove.type)?.color} px-2 py-1 rounded text-xs font-bold`}>
-            {pickMove.type}
-          </div>
-        )}
-        <button onClick={() => setShowShareModal(true)} className="bg-[#2d4a6f] p-2 rounded-lg">
-          <Share2 size={18} className="text-[#9bcbeb]" />
-        </button>
+    <div className="bg-[#1e3a5f] text-white px-4 py-4 safe-top">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-[#9bcbeb]">
+            {gameInfo.pitcherName || 'No Pitcher'} 
+            {gameInfo.pitcherNumber && <span className="text-white"> #{gameInfo.pitcherNumber}</span>}
+          </h1>
+          <p className="text-sm text-white">
+            {gameInfo.opponent ? `vs ${gameInfo.opponent}` : 'Set opponent in Data tab'} 
+            {gameInfo.pitcherThrows && <span className="text-[#9bcbeb]"> • {gameInfo.pitcherThrows === 'R' ? 'RHP' : 'LHP'}</span>}
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          {pickMove.type && (
+            <div className={`${pickMoveTypes.find(m => m.name === pickMove.type)?.color} px-3 py-1.5 rounded text-sm font-bold`}>
+              {pickMove.type}
+            </div>
+          )}
+          <button onClick={() => setShowShareModal(true)} className="bg-[#2d4a6f] p-2 rounded-lg">
+            <Share2 size={20} className="text-[#9bcbeb]" />
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -616,9 +624,6 @@ export default function GraniteHillsScoutApp() {
             <div className="flex gap-1">{[0, 1, 2].map(i => <div key={i} onClick={() => setOuts(i + 1 > 2 ? 0 : i + 1)} className={`w-4 h-4 rounded-full border-2 ${i < outs ? 'bg-red-500 border-red-500' : 'border-slate-400'}`} />)}<span className="text-xs ml-1">OUT</span></div>
           </div>
           <div className="text-2xl font-mono font-bold"><span className="text-green-400">{balls}</span><span className="text-slate-400">-</span><span className="text-red-400">{strikes}</span></div>
-        </div>
-        <div className="bg-[#3d5a7f] px-4 py-2 flex items-center justify-center gap-2">
-          <div className="flex items-center gap-1">{['first', 'second', 'third'].map(base => <button key={base} onClick={() => setRunners(prev => ({ ...prev, [base]: !prev[base] }))} className={`w-6 h-6 rotate-45 border-2 ${runners[base] ? 'bg-[#9bcbeb] border-[#9bcbeb]' : 'border-slate-400'}`} />)}</div>
         </div>
         <div className="bg-slate-100 px-4 py-2"><input type="text" placeholder="Batter name or #" value={currentBatter} onChange={(e) => setCurrentBatter(e.target.value)} className="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm" /></div>
         <div className="flex-1 flex flex-col items-center justify-center bg-slate-100 py-2">
