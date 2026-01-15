@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
-  <rect width="192" height="192" rx="40" fill="#1e3a5f"/>
-  <circle cx="96" cy="90" r="50" fill="none" stroke="#9bcbeb" stroke-width="8"/>
-  <path d="M96 40 C96 40 120 65 120 90 C120 115 96 140 96 140" fill="none" stroke="#9bcbeb" stroke-width="4"/>
-  <path d="M96 40 C96 40 72 65 72 90 C72 115 96 140 96 140" fill="none" stroke="#9bcbeb" stroke-width="4"/>
-  <line x1="46" y1="90" x2="146" y2="90" stroke="#9bcbeb" stroke-width="4"/>
-  <text x="96" y="175" text-anchor="middle" fill="#9bcbeb" font-family="Arial Black" font-size="24" font-weight="bold">GH</text>
-</svg>
