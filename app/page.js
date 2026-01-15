@@ -614,31 +614,30 @@ export default function GraniteHillsScoutApp() {
     );
   };
 
-  const PitchTracker = () => {
-    const [selectedPitch, setSelectedPitch] = useState(null);
-    return (
-      <div className="flex flex-col h-full">
-        <div className="bg-[#2d4a6f] px-4 py-2 flex items-center justify-between text-white">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1"><button onClick={() => setCurrentInning(Math.max(1, currentInning - 1))} className="p-1"><ChevronLeft size={16} /></button><span className="text-sm font-bold">INN {currentInning}</span><button onClick={() => setCurrentInning(currentInning + 1)} className="p-1"><ChevronRight size={16} /></button></div>
-            <div className="flex gap-1">{[0, 1, 2].map(i => <div key={i} onClick={() => setOuts(i + 1 > 2 ? 0 : i + 1)} className={`w-4 h-4 rounded-full border-2 ${i < outs ? 'bg-red-500 border-red-500' : 'border-slate-400'}`} />)}<span className="text-xs ml-1">OUT</span></div>
-          </div>
-          <div className="text-2xl font-mono font-bold"><span className="text-green-400">{balls}</span><span className="text-slate-400">-</span><span className="text-red-400">{strikes}</span></div>
+  const [selectedPitch, setSelectedPitch] = useState(null);
+
+  const PitchTrackerView = (
+    <div className="flex flex-col h-full">
+      <div className="bg-[#2d4a6f] px-4 py-2 flex items-center justify-between text-white">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-1"><button onClick={() => setCurrentInning(Math.max(1, currentInning - 1))} className="p-1"><ChevronLeft size={16} /></button><span className="text-sm font-bold">INN {currentInning}</span><button onClick={() => setCurrentInning(currentInning + 1)} className="p-1"><ChevronRight size={16} /></button></div>
+          <div className="flex gap-1">{[0, 1, 2].map(i => <div key={i} onClick={() => setOuts(i + 1 > 2 ? 0 : i + 1)} className={`w-4 h-4 rounded-full border-2 ${i < outs ? 'bg-red-500 border-red-500' : 'border-slate-400'}`} />)}<span className="text-xs ml-1">OUT</span></div>
         </div>
-        <div className="bg-slate-100 px-4 py-2"><input type="text" placeholder="Batter name or #" value={currentBatter} onChange={(e) => setCurrentBatter(e.target.value)} className="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm" /></div>
-        <div className="flex-1 flex flex-col items-center justify-center bg-slate-100 py-2">
-          <p className="text-xs text-slate-500 mb-2">Zone (optional)</p>
-          <div className="grid grid-cols-3 gap-1">{[1,2,3,4,5,6,7,8,9].map(zone => <button key={zone} onClick={() => setSelectedZone(selectedZone === zone ? null : zone)} className={`w-14 h-12 border-2 rounded text-xs font-bold ${selectedZone === zone ? 'bg-[#9bcbeb] border-[#1e3a5f] text-[#1e3a5f]' : 'bg-white border-slate-300 text-slate-400'}`}>{zone}</button>)}</div>
-        </div>
-        <div className="bg-white border-t px-4 py-3">
-          <p className="text-xs text-slate-500 mb-2 font-medium">PITCH</p>
-          <div className="grid grid-cols-6 gap-2 mb-3">{pitchTypes.map(pt => <button key={pt.name} onClick={() => setSelectedPitch(pt.name)} className={`py-2 rounded-lg text-xs font-bold text-white ${pt.color} ${selectedPitch === pt.name ? 'ring-2 ring-offset-2 ring-[#1e3a5f] scale-105' : 'opacity-80'}`}>{pt.name}</button>)}</div>
-          {selectedPitch && <><p className="text-xs text-slate-500 mb-2 font-medium">RESULT</p><div className="grid grid-cols-6 gap-2">{results.map(r => <button key={r.name} onClick={() => { logPitch(selectedPitch, r.name, selectedZone); setSelectedPitch(null); setSelectedZone(null); }} className={`py-2 rounded-lg text-xs font-bold ${r.type === 'strike' || r.type === 'out' ? 'bg-red-100 text-red-700' : ''} ${r.type === 'ball' ? 'bg-green-100 text-green-700' : ''} ${r.type === 'end' ? 'bg-[#e8f4fc] text-[#1e3a5f]' : ''}`}>{r.name}</button>)}</div></>}
-        </div>
-        <div className="bg-slate-200 px-4 py-2 flex justify-between"><button onClick={resetCount} className="text-xs text-slate-600 font-medium">Reset</button><span className="text-xs text-slate-500">{pitchLog.length} pitches</span></div>
+        <div className="text-2xl font-mono font-bold"><span className="text-green-400">{balls}</span><span className="text-slate-400">-</span><span className="text-red-400">{strikes}</span></div>
       </div>
-    );
-  };
+      <div className="bg-slate-100 px-4 py-2"><input type="text" placeholder="Batter name or #" value={currentBatter} onChange={(e) => setCurrentBatter(e.target.value)} className="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm" /></div>
+      <div className="flex-1 flex flex-col items-center justify-center bg-slate-100 py-2">
+        <p className="text-xs text-slate-500 mb-2">Zone (optional)</p>
+        <div className="grid grid-cols-3 gap-1">{[1,2,3,4,5,6,7,8,9].map(zone => <button key={zone} onClick={() => setSelectedZone(selectedZone === zone ? null : zone)} className={`w-14 h-12 border-2 rounded text-xs font-bold ${selectedZone === zone ? 'bg-[#9bcbeb] border-[#1e3a5f] text-[#1e3a5f]' : 'bg-white border-slate-300 text-slate-400'}`}>{zone}</button>)}</div>
+      </div>
+      <div className="bg-white border-t px-4 py-3">
+        <p className="text-xs text-slate-500 mb-2 font-medium">PITCH</p>
+        <div className="grid grid-cols-6 gap-2 mb-3">{pitchTypes.map(pt => <button key={pt.name} onClick={() => setSelectedPitch(pt.name)} className={`py-2 rounded-lg text-xs font-bold text-white ${pt.color} ${selectedPitch === pt.name ? 'ring-2 ring-offset-2 ring-[#1e3a5f] scale-105' : 'opacity-80'}`}>{pt.name}</button>)}</div>
+        {selectedPitch && <><p className="text-xs text-slate-500 mb-2 font-medium">RESULT</p><div className="grid grid-cols-6 gap-2">{results.map(r => <button key={r.name} onClick={() => { logPitch(selectedPitch, r.name, selectedZone); setSelectedPitch(null); setSelectedZone(null); }} className={`py-2 rounded-lg text-xs font-bold ${r.type === 'strike' || r.type === 'out' ? 'bg-red-100 text-red-700' : ''} ${r.type === 'ball' ? 'bg-green-100 text-green-700' : ''} ${r.type === 'end' ? 'bg-[#e8f4fc] text-[#1e3a5f]' : ''}`}>{r.name}</button>)}</div></>}
+      </div>
+      <div className="bg-slate-200 px-4 py-2 flex justify-between"><button onClick={resetCount} className="text-xs text-slate-600 font-medium">Reset</button><span className="text-xs text-slate-500">{pitchLog.length} pitches</span></div>
+    </div>
+  );
 
   const PitchLogView = () => (
     <div className="flex flex-col h-full bg-slate-100">
@@ -711,7 +710,7 @@ export default function GraniteHillsScoutApp() {
       <LoadModal />
       <ShareModal />
       <div className="flex-1 overflow-hidden">
-        {activeTab === 'pitch' && <PitchTracker />}
+        {activeTab === 'pitch' && PitchTrackerView}
         {activeTab === 'move' && <PickMoveView />}
         {activeTab === 'log' && <PitchLogView />}
         {activeTab === 'stats' && <StatsView />}
